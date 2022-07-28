@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
     </PropertyGroup>
@@ -17,7 +17,7 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
-        <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+        <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
         <PackageReference Include="Serilog.Expressions" Version="3.4.0" />
         <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
