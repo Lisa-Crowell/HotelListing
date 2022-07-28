@@ -33,6 +33,26 @@ namespace HotelListing.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Ireland",
+                            ShortName = "IE"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "United Kingdom",
+                            ShortName = "UK"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Scotland",
+                            ShortName = "SC"
+                        });
                 });
 
             modelBuilder.Entity("HotelListing.API.Data.Hotel", b =>
@@ -58,6 +78,32 @@ namespace HotelListing.API.Migrations
                     b.HasIndex("CountryId");
 
                     b.ToTable("Hotels");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Dublin",
+                            CountryId = 1,
+                            Name = "Brazen Head",
+                            Rating = 5.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "London",
+                            CountryId = 2,
+                            Name = "King's Head",
+                            Rating = 4.0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Edinburgh",
+                            CountryId = 3,
+                            Name = "Edinburgh Castle Hotel",
+                            Rating = 4.5
+                        });
                 });
 
             modelBuilder.Entity("HotelListing.API.Data.Hotel", b =>
