@@ -21,7 +21,6 @@ namespace HotelListing.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        
         public async Task<ActionResult>Register([FromBody] ApiUserDto apiUserDto)
         {
             var errors = await _authManager.RegisterUser(apiUserDto);
@@ -43,10 +42,29 @@ namespace HotelListing.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        
         public async Task<ActionResult>Login([FromBody] LoginDto loginDto)
         {
             var authResponse = await _authManager.Login(loginDto);
+            
+            if (authResponse == null)
+            {
+                // return Unauthorized();
+                ModelState.AddModelError("InvalidCredentials", "Invalid username or password");
+                return BadRequest(ModelState);
+            }
+
+            return Ok(authResponse);
+        }
+        // POST: api/Account/refreshtoken
+        [HttpPost]
+        [Route("refreshtoken")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        
+        public async Task<ActionResult>RefreshToken([FromBody] AuthResponseDto request)
+        {
+            var authResponse = await _authManager.VerifyRefreshToken(request);
             
             if (authResponse == null)
             {
