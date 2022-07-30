@@ -37,5 +37,25 @@ namespace HotelListing.API.Controllers
 
             return Ok();
         }
+        // POST: api/Account/login
+        [HttpPost]
+        [Route("login")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        
+        public async Task<ActionResult>Login([FromBody] LoginDto loginDto)
+        {
+            var authResponse = await _authManager.Login(loginDto);
+            
+            if (authResponse == null)
+            {
+                // return Unauthorized();
+                ModelState.AddModelError("InvalidCredentials", "Invalid username or password");
+                return BadRequest(ModelState);
+            }
+
+            return Ok(authResponse);
+        }
     }
 }
