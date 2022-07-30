@@ -18,7 +18,9 @@ builder.Services.AddDbContext<HotelListingDbContext>(options =>
 
 builder.Services.AddIdentityCore<ApiUser>()
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<HotelListingDbContext>();
+    .AddEntityFrameworkStores<HotelListingDbContext>()
+    .AddDefaultTokenProviders()
+    .AddTokenProvider<DataProtectorTokenProvider<ApiUser>>("HotelListingApi");
 
 builder.Services.AddControllers();
 
