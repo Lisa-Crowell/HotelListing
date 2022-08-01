@@ -9,10 +9,12 @@ namespace HotelListing.API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAuthManager _authManager;
-        
-        public AccountController(IAuthManager authManager)
+        private readonly ILogger<AccountController> _logger;
+
+        public AccountController(IAuthManager authManager, ILogger<AccountController> logger)
         {
             _authManager = authManager;
+            _logger = logger;
         }
         
         // POST: api/Account/register
@@ -23,18 +25,19 @@ namespace HotelListing.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult>Register([FromBody] ApiUserDto apiUserDto)
         {
+            _logger.LogInformation($"Registration attempt for {apiUserDto.Email}");
             var errors = await _authManager.RegisterUser(apiUserDto);
-            
-            if (errors.Any())
-            {
-                foreach (var error in errors)
+                
+                if (errors.Any())
                 {
-                    ModelState.AddModelError(error.Code, error.Description);
+                    foreach (var error in errors)
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);
+                    }
+                    return BadRequest(ModelState);
                 }
-                return BadRequest(ModelState);
-            }
 
-            return Ok();
+                return Ok();
         }
         // POST: api/Account/login
         [HttpPost]
@@ -44,16 +47,17 @@ namespace HotelListing.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult>Login([FromBody] LoginDto loginDto)
         {
+            _logger.LogInformation($"Login attempt for {loginDto.Email}");
             var authResponse = await _authManager.Login(loginDto);
-            
-            if (authResponse == null)
-            {
-                // return Unauthorized();
-                ModelState.AddModelError("InvalidCredentials", "Invalid username or password");
-                return BadRequest(ModelState);
-            }
+                
+                if (authResponse == null)
+                {
+                    // return Unauthorized();
+                    ModelState.AddModelError("InvalidCredentials", "Invalid username or password");
+                    return BadRequest(ModelState);
+                }
 
-            return Ok(authResponse);
+                return Ok(authResponse);
         }
         // POST: api/Account/refreshtoken
         [HttpPost]
